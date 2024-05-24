@@ -1,9 +1,3 @@
-<script setup lang="ts">
-import { useDarkModeStore } from '@/stores/darkMode'
-
-const darkModeStore = useDarkModeStore()
-</script>
-
 <template>
   <label
     :class="{ 'bg-primary': darkModeStore.darkMode, 'bg-stroke': !darkModeStore.darkMode }"
@@ -50,3 +44,9 @@ const darkModeStore = useDarkModeStore()
     </span>
   </label>
 </template>
+
+<script setup lang="ts">
+import { useDarkModeStore } from '@/stores/darkMode'
+
+const darkModeStore = useDarkModeStore()
+</script>

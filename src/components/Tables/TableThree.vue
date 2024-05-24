@@ -1,14 +1,3 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-
-const packages = ref([
-  { name: 'Free Package', price: '$0.00', invoiceDate: 'Jan 13, 2025', status: 'Paid' },
-  { name: 'Standard Package', price: '$59.00', invoiceDate: 'Jan 13, 2025', status: 'Paid' },
-  { name: 'Business Package', price: '$99.00', invoiceDate: 'Jan 13, 2025', status: 'Unpaid' },
-  { name: 'Standard Package', price: '$59.00', invoiceDate: 'Jan 13, 2025', status: 'Pending' }
-])
-</script>
-
 <template>
   <div
     class="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1"
@@ -28,7 +17,7 @@ const packages = ref([
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in packages" :key="index">
+          <tr v-for="(item, index) in items" :key="index">
             <td class="py-5 px-4 pl-9 xl:pl-11">
               <h5 class="font-medium text-black dark:text-white">{{ item.name }}</h5>
               <p class="text-sm">{{ item.price }}</p>
@@ -125,3 +114,32 @@ const packages = ref([
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const items = ref([
+  { name: 'Free Package', price: '$0.00', model: 'Jan 13, 2025', brand: 'asdasd', status: 'Paid' },
+  {
+    name: 'Standard Package',
+    price: '$59.00',
+    model: 'Jan 13, 2025',
+    brand: 'asdasd',
+    status: 'Paid'
+  },
+  {
+    name: 'Business Package',
+    price: '$99.00',
+    model: 'Jan 13, 2025',
+    brand: 'asdasd',
+    status: 'Unpaid'
+  },
+  {
+    name: 'Standard Package',
+    price: '$59.00',
+    model: 'Jan 13, 2025',
+    brand: 'asdasd',
+    status: 'Pending'
+  }
+])
+</script>

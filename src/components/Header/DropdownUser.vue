@@ -1,30 +1,16 @@
-<script setup lang="ts">
-import { onClickOutside } from '@vueuse/core'
-import { ref } from 'vue'
-
-const target = ref(null)
-const dropdownOpen = ref(false)
-
-onClickOutside(target, () => {
-  dropdownOpen.value = false
-})
-</script>
-
 <template>
-  <div class="relative" ref="target">
+  <div v-if="user" class="relative" ref="target">
     <router-link
       class="flex items-center gap-4"
       to="#"
       @click.prevent="dropdownOpen = !dropdownOpen"
     >
       <span class="hidden text-right lg:block">
-        <span class="block text-sm font-medium text-black dark:text-white">Thomas Anree</span>
-        <span class="block text-xs font-medium">UX Designer</span>
+        <span class="block text-sm font-medium text-black dark:text-white">{{ user.name }}</span>
+        <span class="block text-xs font-medium">{{ user.email }}</span>
       </span>
 
-      <span class="h-12 w-12 rounded-full">
-        <img src="@/assets/images/user/user-01.png" alt="User" />
-      </span>
+      <img class="h-12 w-12 rounded-full" :src="user.picture" alt="User" />
 
       <svg
         :class="dropdownOpen && 'rotate-180'"
@@ -123,6 +109,7 @@ onClickOutside(target, () => {
         </li>
       </ul>
       <button
+        @click="handleLogout"
         class="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
       >
         <svg
@@ -148,3 +135,24 @@ onClickOutside(target, () => {
     <!-- Dropdown End -->
   </div>
 </template>
+
+<script setup lang="ts">
+import { useAuth0 } from '@auth0/auth0-vue'
+import { onClickOutside } from '@vueuse/core'
+import { computed, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const { user, logout } = useAuth0()
+const router = useRouter()
+const target = ref(null)
+const dropdownOpen = ref(false)
+
+onClickOutside(target, () => {
+  dropdownOpen.value = false
+})
+
+async function handleLogout() {
+  await logout()
+  router.push({ name: 'signin' })
+}
+</script>

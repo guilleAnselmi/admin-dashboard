@@ -12,11 +12,18 @@ import ProfileView from '@/views/ProfileView.vue'
 import TablesView from '@/views/TablesView.vue'
 import AlertsView from '@/views/UiElements/AlertsView.vue'
 import ButtonsView from '@/views/UiElements/ButtonsView.vue'
+import SignUp from '@/myviews/auth/SignupView.vue'
+import SignIn from '@/myviews/auth/SigninView.vue'
+import DashboardView from '@/myviews/dashboard/CarsViews.vue'
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import { authGuard } from '@auth0/auth0-vue'
 
-const routes = [
+const exampleRoutes = [
   {
     path: '/',
     name: 'eCommerce',
+    beforeEnter: authGuard,
+
     component: ECommerceView,
     meta: {
       title: 'eCommerce Dashboard'
@@ -112,6 +119,34 @@ const routes = [
   }
 ]
 
+
+const routes = [
+  ...exampleRoutes,
+  {
+    path: '/signup',
+    name: 'signup',
+    component: SignUp
+  },
+  {
+    path: '/signin',
+    name: 'signin',
+    component: SignIn
+  },
+  {
+    path: '/main',
+    component: DefaultLayout,
+    name: 'main',
+    beforeEnter: authGuard,
+    children: [
+      {
+        path: '',
+        component: DashboardView,
+        name: 'dashboard',
+      }
+    ]
+  }
+]
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
@@ -120,9 +155,30 @@ const router = createRouter({
   }
 })
 
-router.beforeEach((to, from, next) => {
-  document.title = `Vue.js ${to.meta.title} | TailAdmin - Vue.js Tailwind CSS Dashboard Template`
-  next()
-})
+router.beforeEach(async (to, from, next) => {
+  // Set the document title
+  document.title = `Vue.js ${to.meta.title} | TailAdmin - Vue.js Tailwind CSS Dashboard Template`;
+
+  // Check if the route requires authentication
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    try {
+      // Check if the user is authenticated
+      // const isAuthenticated = await authGuard(to);
+      const isAuthenticated = false;
+      if (isAuthenticated) {
+        next();
+      } else {
+        console.log('Not authenticated');
+
+        // If not authenticated, redirect to the login page
+        next({ name: 'signin' });
+      }
+    } catch (err) {
+      next('/error'); // Redirect to an error page or handle error appropriately
+    }
+  } else {
+    next();
+  }
+});
 
 export default router
