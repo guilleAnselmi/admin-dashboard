@@ -14,8 +14,9 @@ import AlertsView from '@/views/UiElements/AlertsView.vue'
 import ButtonsView from '@/views/UiElements/ButtonsView.vue'
 import SignUp from '@/myviews/auth/SignupView.vue'
 import SignIn from '@/myviews/auth/SigninView.vue'
-import DashboardView from '@/myviews/dashboard/CarsViews.vue'
+import CarsView from '@/myviews/dashboard/CarsView.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import MyDefaultLayout from '../mylayouts/DefaultLayout.vue'
 import { authGuard } from '@auth0/auth0-vue'
 
 const exampleRoutes = [
@@ -134,14 +135,14 @@ const routes = [
   },
   {
     path: '/main',
-    component: DefaultLayout,
+    component: MyDefaultLayout,
     name: 'main',
     beforeEnter: authGuard,
     children: [
       {
         path: '',
-        component: DashboardView,
-        name: 'dashboard',
+        component: CarsView,
+        name: 'cars',
       }
     ]
   }
